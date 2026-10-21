@@ -17,10 +17,7 @@ export default class List {
         return newNode;
     }
     insertAt(index, ...values) {
-            if (index < 0 || index > this.list.length) {
-                console.error("Invalid index: Index out of bounds");
-                return;
-            }
+            if (index < 0 || index > this.list.length) { throw new RangeError('Invalid index, out of bounds'); }
 
             // slice list from beginning to provided index to preserve first part of array
             const listPartA = this.list.slice(0, index);
@@ -40,7 +37,17 @@ export default class List {
             });
 
             this.list = [...listPartA, ...listPartB];
+    }
+    removeAt(index){
+        if (index < 0 || index > this.list.length) { throw new RangeError('Invalid index, out of bounds'); }
 
+        // update nextNode positions
+        this.list[index - 1]?.setNextNode(this.list[index + 1]);
+
+        // remove indexed node
+        console.log('removing... ', this.list[index].getValue());
+        this.list.splice(index, 1);
+        return true;
     }
     size() {
         return this.list.length ?? 0;
